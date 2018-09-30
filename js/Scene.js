@@ -1,4 +1,7 @@
+var controls;
+
 class Scene {
+
 
     createScene() {
         'use strict';
@@ -9,7 +12,7 @@ class Scene {
         this.scene.add(new THREE.AxisHelper(10));
         
         this.mesa = new Table(0, 8, 0);
-        this.scene.add(this.mesa.table); 
+        this.scene.add(this.mesa); 
 
         /*var chair = new Chair(0, 0, 0);
         this.scene.add(chair);*/
@@ -26,6 +29,7 @@ class Scene {
         this.camera.position.y = 50;
         this.camera.position.z = 50;
         this.camera.lookAt(this.scene.position);
+
     }
     
     onResize() {
@@ -80,7 +84,7 @@ class Scene {
        
         this.createScene();
         this.createCamera();
-        
+        controls = new THREE.TrackballControls(this.camera);
         this.render();
         
         window.addEventListener("keydown", this.onKeyDown);
@@ -90,9 +94,10 @@ class Scene {
     animate() {
         'use strict';
         
-        
+        console.print("aaa");
+        //print("aaaaa");
         //this.render();
-        
-        requestAnimationFrame(this.animate);
+        controls.update();
+        requestAnimationFrame(this.animate.bind(this));
     }
 }
