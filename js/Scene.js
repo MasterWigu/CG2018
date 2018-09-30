@@ -1,34 +1,41 @@
 var controls;
 
-class Scene {
+class Scene extends THREE.Scene {
 
 
     createScene() {
         'use strict';
-        
-        this.scene = new THREE.Scene();
-        
     
-        this.scene.add(new THREE.AxisHelper(10));
+        this.add(new THREE.AxisHelper(10));
         
         this.mesa = new Table(0, 8, 0);
-        this.scene.add(this.mesa); 
+        this.add(this.mesa); 
 
         /*var chair = new Chair(0, 0, 0);
-        this.scene.add(chair);*/
+        this.add(chair);*/
+
+        /*var lamp = new Lamp(0, 0, 0);
+        this.add(lamp);*/
 
     }
     
-    createCamera() {
+    createCameras() {
         'use strict';
-        this.camera = new THREE.PerspectiveCamera(70,
-                                             window.innerWidth / window.innerHeight,
-                                             1,
-                                             1000);
-        this.camera.position.x = 50;
-        this.camera.position.y = 50;
-        this.camera.position.z = 50;
-        this.camera.lookAt(this.scene.position);
+        this.activeCamera = 0;  //guarda qual a camara que estamos a usar (para o render)
+        this.camera1 = new Camera(this, 0, 50, 0);
+        this.camera2 = new Camera(this, 50, 0, 0);
+        this.camera3 = new Camera(this, 0, 0, 50);
+
+
+        //Camera temporaria movível
+        this.camera0 = new THREE.PerspectiveCamera(70,
+                                         window.innerWidth / window.innerHeight,
+                                         1,
+                                         1000);
+        this.camera0.position.x = 50;
+        this.camera0.position.y = 50;
+        this.camera0.position.z = 50;
+        this.camera0.lookAt(this.position);
 
     }
     
@@ -38,8 +45,8 @@ class Scene {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         
         if (window.innerHeight > 0 && window.innerWidth > 0) {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
-            this.camera.updateProjectionMatrix();
+            this.camera1.aspect = window.innerWidth / window.innerHeight;
+            this.camera1.updateProjectionMatrix();
         }
     
     }
@@ -48,9 +55,23 @@ class Scene {
         'use strict';
         
         switch (e.keyCode) {
+        case 49:
+            this.activeCamera = 1;
+            break;
+        case 50:
+            this.activeCamera = 2;
+            break;
+        case 51:
+            this.activeCamera = 3;
+            break;
+        case 52: //para camara movivel
+            this.activeCamera = 0;
+            break;
+
+
         case 65: //A
         case 97: //a
-            this.scene.traverse(function (node) {
+            this.traverse(function (node) {
                 if (node instanceof THREE.Mesh) {
                     node.material.wireframe = !node.material.wireframe;
                 }
@@ -60,7 +81,7 @@ class Scene {
         case 115: //s
         case 69:  //E
         case 101: //e
-            this.scene.traverse(function (node) {
+            this.traverse(function (node) {
                 if (node instanceof THREE.AxisHelper) {
                     node.visible = !node.visible;
                 }
@@ -71,33 +92,44 @@ class Scene {
     
     render() {
         'use strict';
-        this.renderer.render(this.scene, this.camera);
+        if (this.activeCamera == 0)
+            this.renderer.render(this, this.camera0); //camara movivel (apagar)
+        if (this.activeCamera == 1)
+            this.renderer.render(this, this.camera1);
+        if (this.activeCamera == 2)
+            this.renderer.render(this, this.camera2);
+        if (this.activeCamera == 3)
+            this.renderer.render(this, this.camera3);
     }
     
     constructor() {
         'use strict';
+
+        super();
+
         this.renderer = new THREE.WebGLRenderer({
             antialias: true
         });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
        
+
         this.createScene();
-        this.createCamera();
-        controls = new THREE.TrackballControls(this.camera);
+        this.createCameras();
+        
+        this.controls = new THREE.TrackballControls(this.camera0); //para a camara movivel
+        
         this.render();
         
-        window.addEventListener("keydown", this.onKeyDown);
-        window.addEventListener("resize", this.onResize);
+        window.addEventListener("keydown", this.onKeyDown.bind(this)); //tem de se usar o bind() por ser uma classe ou wtv, apenas sei que funciona assim
+        window.addEventListener("resize", this.onResize.bind(this));
     }
     
     animate() {
         'use strict';
         
-        console.print("aaa");
-        //print("aaaaa");
-        //this.render();
-        controls.update();
+        this.render();
+        this.controls.update(); //para a camara movivel (apagar)
         requestAnimationFrame(this.animate.bind(this));
     }
 }

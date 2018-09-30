@@ -30,10 +30,10 @@ class Table extends THREE.Object3D {
         this.material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
        
         this.addTableTop(this, 0, 0, 0);
-        this.addTableLeg(this, -25, -2, -8);
-        this.addTableLeg(this, -25, -2, 8);
-        this.addTableLeg(this, 25, -2, 8);
-        this.addTableLeg(this, 25, -2, -8);
+        this.addTableLeg(this, -25, -4, -8);
+        this.addTableLeg(this, -25, -4, 8);
+        this.addTableLeg(this, 25, -4, 8);
+        this.addTableLeg(this, 25, -4, -8);
         
         
         
