@@ -1,7 +1,7 @@
 class Camera extends THREE.OrthographicCamera {
 	
 	constructor(scene, x, y, z) {
-		var distance = 30 //este numero e inversamente proporcional a distancia aparente da camara
+		var distance = 20 //este numero e inversamente proporcional a distancia aparente da camara
 
 		super(-window.innerWidth / distance,
 			 window.innerWidth / distance,

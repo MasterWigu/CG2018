@@ -14,8 +14,8 @@ class Scene extends THREE.Scene {
         /*var chair = new Chair(0, 0, 0);
         this.add(chair);*/
 
-        /*var lamp = new Lamp(0, 0, 0);
-        this.add(lamp);*/
+        this.lamp = new Lamp(16, -2, -6.5);
+        this.add(this.lamp);
 
     }
     
