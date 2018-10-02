@@ -45,10 +45,14 @@ class Scene extends THREE.Scene {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         
         if (window.innerHeight > 0 && window.innerWidth > 0) {
-            this.camera1.aspect = window.innerWidth / window.innerHeight;
-            this.camera1.updateProjectionMatrix();
+            this.camera0.aspect = window.innerWidth / window.innerHeight;
+            this.camera0.updateProjectionMatrix();
         }
     
+        this.camera1.update();
+        this.camera2.update();
+        this.camera3.update();
+
     }
     
     onKeyDown(e) {
@@ -106,6 +110,7 @@ class Scene extends THREE.Scene {
         'use strict';
 
         super();
+        this.background = new THREE.Color( 0xfff7c4 );
 
         this.renderer = new THREE.WebGLRenderer({
             antialias: true

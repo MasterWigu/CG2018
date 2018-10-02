@@ -26,7 +26,7 @@ class Lamp extends THREE.Object3D {
 
     makeLamp(x, y, z) {
     	'use strict';
-    	this.geometry = new THREE.SphereGeometry(2, 20, 20);
+    	this.geometry = new THREE.SphereGeometry(2, 10, 10);
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.position.set(x, y + 28, z);
         this.add(this.mesh);
