@@ -60,6 +60,7 @@ class Scene extends THREE.Scene {
         switch (e.keyCode) {
         case 38:
         case 40:
+            this.chair.keyReleased();
             this.chair.stopMove();
             break;
         }
@@ -71,13 +72,13 @@ class Scene extends THREE.Scene {
         
         switch (e.keyCode) {
         case 37:
-            this.chair.rotateN();
+            this.chair.rotateP();
             break;
         case 38:
             this.chair.moveN();
             break;
         case 39:
-            this.chair.rotateP();
+            this.chair.rotateN();
             break;
         case 40:
             this.chair.moveP();
@@ -157,7 +158,8 @@ class Scene extends THREE.Scene {
     animate() {
         'use strict';
         
-        this.chair.brake();
+        this.chair.stopMove();
+        this.chair.renderMovement();
         this.render();
         this.controls.update(); //para a camara movivel (apagar)
         requestAnimationFrame(this.animate.bind(this));
