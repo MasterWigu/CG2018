@@ -42,11 +42,13 @@ class Chair extends THREE.Object3D {
 	rotateP() {
 		this.top.rotateY(this.rotAngle);
 		this.absRot+=this.rotAngle;
+		this.wheelsUpdated = false;
 	}
 
 	rotateN() {
 		this.top.rotateY(-this.rotAngle);
 		this.absRot-=this.rotAngle;
+		this.wheelsUpdated = false;
 	}
 
 	updateWheels() {
@@ -65,9 +67,11 @@ class Chair extends THREE.Object3D {
 	}
 
 
-	moveP() {
-		this.updateWheels();
-
+	startMove(dir) {
+		if (this.wheelsUpdated == false) {
+			this.updateWheels();
+			this.wheelsUpdated = true;
+		}
 
 		if (this.keyIsPressed == false) {
 			this.startMoveTime = new Date();
@@ -75,67 +79,36 @@ class Chair extends THREE.Object3D {
 			this.braking = false;
 		}
 
-
-		this.speed = this.speed + this.accel*(new Date() - this.startMoveTime);
-		this.lastMove = 1;
+		this.speed = this.speed + dir * this.accel*(new Date() - this.startMoveTime);
+		this.lastMove = dir;
 	}
-
-	moveN() {
-		this.updateWheels();
-
-		if (this.keyIsPressed == false) {
-			this.startMoveTime = new Date();
-			this.keyIsPressed = true;
-			this.braking = false;
-		}
-
-		this.speed = this.speed - this.accel*(new Date() - this.startMoveTime);
-		this.lastMove = -1;
-	}
-
-	stopMoveP() {
-		this.updateWheels();
-
-		if (this.keyIsPressed == false && this.braking == false) {
-			this.startMoveTime = new Date();
-			this.braking = true;
-		}
-
-
-		this.speed = this.speed - this.brakeAccel*(new Date() - this.startMoveTime);
-		if (this.speed < 0) {
-			this.speed = 0;
-		}
-	}
-
-
-	stopMoveN() {
-		console.log("stopN")
-		this.updateWheels();
-
-
-		if (this.keyIsPressed == false && this.braking == false) {
-			this.startMoveTime = new Date();
-			this.braking = true;
-		}
-
-		this.speed = this.speed + this.brakeAccel*(new Date() - this.startMoveTime);
-		if (this.speed > 0) {
-			this.speed = 0;
-		}
-	}
-
 
 
 	stopMove() {
+
+		if (this.keyIsPressed == false && this.braking == false) {
+			this.startMoveTime = new Date();
+			this.braking = true;
+		}
+
 		if (this.keyIsPressed == false && this.speed != 0) {
-			if (this.lastMove == 1) {
-				this.stopMoveP();
+			if (this.lastMove == -1) {
+				this.speed = this.speed + this.brakeAccel*(new Date() - this.startMoveTime);
+				if (this.speed > 0)
+					this.speed = 0;
 			}
 			else {
-				this.stopMoveN();
+				this.speed = this.speed - this.brakeAccel*(new Date() - this.startMoveTime);
+				if (this.speed < 0)
+					this.speed = 0;
+			}
+
+			if (this.wheelsUpdated == false) {
+				this.updateWheels();
+				this.wheelsUpdated = true;
 			}
 		}
+
 		if (this.speed <= 0.0001 && this.speed >= -0.0001)
 			this.speed = 0;
 	}
@@ -192,7 +165,7 @@ class Chair extends THREE.Object3D {
         this.wheelRotTemp = 0;
         this.speed = 0;
         this.accel = 0.001;
-        this.brakeAccel = 0.002;
+        this.brakeAccel = 0.001;
         this.lastMove = 1;
         this.keyIsPressed = false;
         this.wheelsUpdated = false;
