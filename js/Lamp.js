@@ -36,9 +36,8 @@ class Lamp extends THREE.Object3D {
 		'use strict';
 		super();
 
-		this.material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
-
-
+		this.material = new THREE.MeshBasicMaterial({ color: 0xffcd00, wireframe: false });
+		
 		this.makeBase(x, y, z);
 		this.makeStick(x, y, z);
 		this.makeTop(x, y, z);

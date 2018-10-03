@@ -25,8 +25,8 @@ class Table extends THREE.Object3D {
 
         super();
         
-        this.topMaterial = new THREE.MeshBasicMaterial({ color: 0xb77100, wireframe: true });
-        this.legMaterial = new THREE.MeshBasicMaterial({ color: 0x996006, wireframe: true });
+        this.topMaterial = new THREE.MeshBasicMaterial({ color: 0xb77100, wireframe: false });
+        this.legMaterial = new THREE.MeshBasicMaterial({ color: 0x996006, wireframe: false });
 
         this.addTableTop(0, 0, 0);
         this.addTableLeg(-25, -6, -8);

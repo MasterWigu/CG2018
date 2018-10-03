@@ -11,7 +11,7 @@ class Scene extends THREE.Scene {
         this.mesa = new Table(0, 8, 0);
         this.add(this.mesa); 
 
-        this.chair = new Chair(0, -6.25, 10);
+        this.chair = new Chair(0, -6.25, 0);
         this.add(this.chair);
 
         this.lamp = new Lamp(16, -2, -6.5);
@@ -54,11 +54,34 @@ class Scene extends THREE.Scene {
         this.camera3.update();
 
     }
+
+    onKeyUp(e) {
+        'use strict';
+        switch (e.keyCode) {
+        case 38:
+        case 40:
+            this.chair.stopMove();
+            break;
+        }
+        console.log("aaa");
+    }
     
     onKeyDown(e) {
         'use strict';
         
         switch (e.keyCode) {
+        case 37:
+            this.chair.rotateN();
+            break;
+        case 38:
+            this.chair.moveN();
+            break;
+        case 39:
+            this.chair.rotateP();
+            break;
+        case 40:
+            this.chair.moveP();
+            break;
         case 49:
             this.activeCamera = 1;
             break;
@@ -127,12 +150,14 @@ class Scene extends THREE.Scene {
         this.render();
         
         window.addEventListener("keydown", this.onKeyDown.bind(this)); //tem de se usar o bind() por ser uma classe ou wtv, apenas sei que funciona assim
+        window.addEventListener("keyup", this.onKeyUp.bind(this));
         window.addEventListener("resize", this.onResize.bind(this));
     }
     
     animate() {
         'use strict';
         
+        this.chair.brake();
         this.render();
         this.controls.update(); //para a camara movivel (apagar)
         requestAnimationFrame(this.animate.bind(this));
