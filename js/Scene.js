@@ -31,7 +31,7 @@ class Scene extends THREE.Scene {
         this.camera0 = new THREE.PerspectiveCamera(70,
                                          window.innerWidth / window.innerHeight,
                                          1,
-                                         1000);
+                                         100000000);
         this.camera0.position.x = 50;
         this.camera0.position.y = 50;
         this.camera0.position.z = 50;
@@ -57,33 +57,34 @@ class Scene extends THREE.Scene {
 
     onKeyUp(e) {
         'use strict';
-        switch (e.keyCode) {
+        this.chair.keyReleased(e.keyCode);
+        /*switch (e.keyCode) {
         case 38:
         case 40:
             this.chair.keyReleased();
             this.chair.stopMove();
             break;
         }
-        console.log("aaa");
+        console.log("aaa");*/
     }
     
     onKeyDown(e) {
         'use strict';
-        console.log(e.key)
-        
+        //console.log(e.key)
+        this.chair.keyPressed(e.keyCode);
         switch (e.keyCode) {
-        case 37:
-            this.chair.rotateP();
+        /*case 37:
+            this.chair.keyPressed(e.keyCode);
             break;
         case 38:
-            this.chair.startMove(-1);
+            this.chair.keyPressed(e.keyCode);
             break;
         case 39:
-            this.chair.rotateN();
+            this.chair.keyPressed(e.keyCode);
             break;
         case 40:
-            this.chair.startMove(1);
-            break;
+            this.chair.keyPressed(e.keyCode);
+            break;*/
         case 49:
             this.activeCamera = 1;
             break;
@@ -108,6 +109,8 @@ class Scene extends THREE.Scene {
             break;
         case 83:  //S
         case 115: //s
+            this.chair.resetPos();
+            break;
         case 69:  //E
         case 101: //e
             this.traverse(function (node) {
@@ -159,7 +162,7 @@ class Scene extends THREE.Scene {
     animate() {
         'use strict';
         
-        this.chair.stopMove();
+        this.chair.move();
         this.chair.renderMovement();
         this.render();
         this.controls.update(); //para a camara movivel (apagar)

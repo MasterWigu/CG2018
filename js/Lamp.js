@@ -2,9 +2,9 @@ class Lamp extends THREE.Object3D {
 
 	makeBase(x, y, z) {
         'use strict';
-        this.geometry = new THREE.CylinderGeometry(3, 3, 1, 20);
+        this.geometry = new THREE.ConeGeometry(3, 3, 10, 10);
         this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.mesh.position.set(x, y-4.5, z);
+        this.mesh.position.set(x, y-3.5, z);
         this.add(this.mesh);
     }
 
@@ -36,11 +36,13 @@ class Lamp extends THREE.Object3D {
 		'use strict';
 		super();
 
-		this.material = new THREE.MeshBasicMaterial({ color: 0xffcd00, wireframe: false });
-		
+		this.material = new THREE.MeshBasicMaterial({ color: 0xffcd00, wireframe: true });
+        this.material.side = THREE.DoubleSide
+
 		this.makeBase(x, y, z);
 		this.makeStick(x, y, z);
 		this.makeTop(x, y, z);
+		this.makeLamp(x, y, z);
 		this.makeLamp(x, y, z);
 
 		this.position.x = x;
