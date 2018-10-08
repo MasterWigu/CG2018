@@ -1,12 +1,16 @@
 class Chair extends THREE.Object3D {
 
-	createWheel(x, y, z, rot) {
+	createWheel(x, y, z, rot, wheelNum) {
 		this.geometry = new THREE.TorusGeometry(0.75, 0.50, 20, 10);
         this.mesh = new THREE.Mesh(this.geometry, this.wheelMaterial);
         this.mesh.position.set(0, 0, 0);
         this.mesh.rotateOnAxis(new THREE.Vector3(0,1,0), rot);
-        
-        return this.mesh;
+        this.wheelChilds[wheelNum] = this.mesh;
+        this.wheels[wheelNum] = new THREE.Object3D();
+        this.wheels[wheelNum].add(this.wheelChilds[wheelNum]);
+        this.wheels[wheelNum].position.set(x, y, z);
+        this.bottom.add(this.wheels[wheelNum]);
+        //return this.mesh;
 	}
 
 	createWheelArm(x, y, z, rot) {
@@ -40,32 +44,12 @@ class Chair extends THREE.Object3D {
 	}
 
 	createWheels(x, y, z) {
-		this.wheel1Child = this.createWheel(x+4.25, y-1.5 ,z, 55);
-		this.wheel2Child = this.createWheel(x-4.25, y-1.5 ,z, 55);
-		this.wheel3Child = this.createWheel(x ,y-1.5 ,z+4.25, 55);
-		this.wheel4Child = this.createWheel(x ,y-1.5 ,z-4.25, 55);
-		this.wheel5Child = this.createWheel(x ,y-1.5 ,z-4.25, 55);
-		this.wheel1 = new THREE.Object3D();
-		this.wheel2 = new THREE.Object3D();
-		this.wheel3 = new THREE.Object3D();
-		this.wheel4 = new THREE.Object3D();
-		this.wheel5 = new THREE.Object3D();
-		this.wheel1.add(this.wheel1Child);
-		this.wheel2.add(this.wheel2Child);
-		this.wheel3.add(this.wheel3Child);
-		this.wheel4.add(this.wheel4Child);
-		this.wheel5.add(this.wheel5Child);
-		this.wheel1.position.set(x+4.25, y-1.5 ,z, 55);
-		this.wheel2.position.set(x-4.25, y-1.5 ,z, 55);
-		this.wheel3.position.set(x ,y-1.5 ,z+4.25, 55);
-		this.wheel4.position.set(x ,y-1.5 ,z-4.25, 55);
-		this.wheel5.position.set(x ,y-1.5 ,z-4.25, 55);
-		this.bottom.add(this.wheel1);
-		this.bottom.add(this.wheel2);
-		this.bottom.add(this.wheel3);
-		this.bottom.add(this.wheel4);
-		this.bottom.add(this.wheel5);
-	}
+		this.createWheel(x+4.25, y-1.5 ,z, 55, 0);
+		this.createWheel(x-4.25, y-1.5 ,z, 55, 1);
+		this.createWheel(x ,y-1.5 ,z+4.25, 55, 2);
+		this.createWheel(x ,y-1.5 ,z-4.25, 55, 3);
+		this.createWheel(x ,y-1.5 ,z-4.25, 55, 4);
+
 
 	rotateP() {
 		this.top.rotateY(this.rotAngle);
@@ -80,28 +64,28 @@ class Chair extends THREE.Object3D {
 	}
 
 	updateWheels() {
-		this.wheel1.rotateY(-this.wheelRotTemp);
-		this.wheel2.rotateY(-this.wheelRotTemp);
-		this.wheel3.rotateY(-this.wheelRotTemp);
-		this.wheel4.rotateY(-this.wheelRotTemp);
-		this.wheel5.rotateY(-this.wheelRotTemp);
+		this.wheels[0].rotateY(-this.wheelRotTemp);
+		this.wheels[1].rotateY(-this.wheelRotTemp);
+		this.wheels[2].rotateY(-this.wheelRotTemp);
+		this.wheels[3].rotateY(-this.wheelRotTemp);
+		this.wheels[4].rotateY(-this.wheelRotTemp);
 
 
-		this.wheel1.rotateY(this.absRot);
-		this.wheel2.rotateY(this.absRot);
-		this.wheel3.rotateY(this.absRot);
-		this.wheel4.rotateY(this.absRot);
-		this.wheel5.rotateY(this.absRot);
+		this.wheels[0].rotateY(this.absRot);
+		this.wheels[1].rotateY(this.absRot);
+		this.wheels[2].rotateY(this.absRot);
+		this.wheels[3].rotateY(this.absRot);
+		this.wheels[4].rotateY(this.absRot);
 
 		this.wheelRotTemp = this.absRot;
 	}
 
 	rotateWheels() {
-		this.wheel1Child.rotateZ(-this.speed/1.25);
-		this.wheel2Child.rotateZ(-this.speed/1.25);
-		this.wheel3Child.rotateZ(-this.speed/1.25);
-		this.wheel4Child.rotateZ(-this.speed/1.25);
-		this.wheel5Child.rotateZ(-this.speed/1.25);
+		this.wheelChilds[0].rotateZ(-this.speed/1.25);
+		this.wheelChilds[1].rotateZ(-this.speed/1.25);
+		this.wheelChilds[2].rotateZ(-this.speed/1.25);
+		this.wheelChilds[3].rotateZ(-this.speed/1.25);
+		this.wheelChilds[4].rotateZ(-this.speed/1.25);
 	}
 
 
@@ -203,6 +187,9 @@ class Chair extends THREE.Object3D {
 	constructor(x, y, z) {
 		super();
 
+		this.wheels = [];
+		this.wheelChilds = [];
+
 		this.top = new THREE.Object3D();
 		this.bottom = new THREE.Object3D();
 
@@ -244,7 +231,7 @@ class Chair extends THREE.Object3D {
         this.wheelRotTemp = 0;
         this.speed = 0;
         this.accel = 0.0005;
-        this.brakeAccel = 0.0005;
+        this.brakeAccel = 0.001;
         this.lastMove = 1;
         this.wheelsUpdated = false;
 

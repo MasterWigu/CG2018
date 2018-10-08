@@ -1,6 +1,3 @@
-/*global THREE, requestAnimationFrame, console*/
-        
-    
 class Table extends THREE.Object3D {
     
     addTableLeg(x, y, z) {
