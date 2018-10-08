@@ -26,5 +26,4 @@ class Camera extends THREE.OrthographicCamera {
         this.updateProjectionMatrix();
 	}
 
-
 }

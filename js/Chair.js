@@ -216,8 +216,6 @@ class Chair extends THREE.Object3D {
         this.wheelsUpdated = false;
 
         this.translateZ(10)
-
-
 	}
 
 }

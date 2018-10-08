@@ -58,33 +58,12 @@ class Scene extends THREE.Scene {
     onKeyUp(e) {
         'use strict';
         this.chair.keyReleased(e.keyCode);
-        /*switch (e.keyCode) {
-        case 38:
-        case 40:
-            this.chair.keyReleased();
-            this.chair.stopMove();
-            break;
-        }
-        console.log("aaa");*/
     }
     
     onKeyDown(e) {
         'use strict';
-        //console.log(e.key)
         this.chair.keyPressed(e.keyCode);
         switch (e.keyCode) {
-        /*case 37:
-            this.chair.keyPressed(e.keyCode);
-            break;
-        case 38:
-            this.chair.keyPressed(e.keyCode);
-            break;
-        case 39:
-            this.chair.keyPressed(e.keyCode);
-            break;
-        case 40:
-            this.chair.keyPressed(e.keyCode);
-            break;*/
         case 49:
             this.activeCamera = 1;
             break;
@@ -169,33 +148,3 @@ class Scene extends THREE.Scene {
         requestAnimationFrame(this.animate.bind(this));
     }
 }
-/*
-kinput.onkeydown = kinput.onkeyup = kinput.onkeypress = handle;
-
-let lastTime = Date.now();
-
-function handle(e) {
-  if (form.elements[e.type + 'Ignore'].checked) return;
-
-  let text = e.type +
-    ' key=' + e.key +
-    ' code=' + e.code +
-    (e.shiftKey ? ' shiftKey' : '') +
-    (e.ctrlKey ? ' ctrlKey' : '') +
-    (e.altKey ? ' altKey' : '') +
-    (e.metaKey ? ' metaKey' : '') +
-    (e.repeat ? ' (repeat)' : '') +
-    "\n";
-
-  if (area.value && Date.now() - lastTime > 250) {
-    area.value += new Array(81).join('-') + '\n';
-  }
-  lastTime = Date.now();
-
-  area.value += text;
-
-  if (form.elements[e.type + 'Stop'].checked) {
-    e.preventDefault();
-  }
-}
-*/
