@@ -3,9 +3,9 @@ class Chair extends THREE.Object3D {
 	createWheel(x, y, z, rot) {
 		this.geometry = new THREE.TorusGeometry(0.75, 0.50, 20, 10);
         this.mesh = new THREE.Mesh(this.geometry, this.wheelMaterial);
-        this.mesh.position.set(x, y, z);
+        this.mesh.position.set(0, 0, 0);
         this.mesh.rotateOnAxis(new THREE.Vector3(0,1,0), rot);
-        this.bottom.add(this.mesh);
+        
         return this.mesh;
 	}
 
@@ -39,6 +39,34 @@ class Chair extends THREE.Object3D {
         this.top.add(this.mesh);
 	}
 
+	createWheels(x, y, z) {
+		this.wheel1Child = this.createWheel(x+4.25, y-1.5 ,z, 55);
+		this.wheel2Child = this.createWheel(x-4.25, y-1.5 ,z, 55);
+		this.wheel3Child = this.createWheel(x ,y-1.5 ,z+4.25, 55);
+		this.wheel4Child = this.createWheel(x ,y-1.5 ,z-4.25, 55);
+		this.wheel5Child = this.createWheel(x ,y-1.5 ,z-4.25, 55);
+		this.wheel1 = new THREE.Object3D();
+		this.wheel2 = new THREE.Object3D();
+		this.wheel3 = new THREE.Object3D();
+		this.wheel4 = new THREE.Object3D();
+		this.wheel5 = new THREE.Object3D();
+		this.wheel1.add(this.wheel1Child);
+		this.wheel2.add(this.wheel2Child);
+		this.wheel3.add(this.wheel3Child);
+		this.wheel4.add(this.wheel4Child);
+		this.wheel5.add(this.wheel5Child);
+		this.wheel1.position.set(x+4.25, y-1.5 ,z, 55);
+		this.wheel2.position.set(x-4.25, y-1.5 ,z, 55);
+		this.wheel3.position.set(x ,y-1.5 ,z+4.25, 55);
+		this.wheel4.position.set(x ,y-1.5 ,z-4.25, 55);
+		this.wheel5.position.set(x ,y-1.5 ,z-4.25, 55);
+		this.bottom.add(this.wheel1);
+		this.bottom.add(this.wheel2);
+		this.bottom.add(this.wheel3);
+		this.bottom.add(this.wheel4);
+		this.bottom.add(this.wheel5);
+	}
+
 	rotateP() {
 		this.top.rotateY(this.rotAngle);
 		this.absRot+=this.rotAngle;
@@ -68,9 +96,16 @@ class Chair extends THREE.Object3D {
 		this.wheelRotTemp = this.absRot;
 	}
 
+	rotateWheels() {
+		this.wheel1Child.rotateZ(-this.speed/1.25);
+		this.wheel2Child.rotateZ(-this.speed/1.25);
+		this.wheel3Child.rotateZ(-this.speed/1.25);
+		this.wheel4Child.rotateZ(-this.speed/1.25);
+		this.wheel5Child.rotateZ(-this.speed/1.25);
+	}
+
 
 	startMove(dir) {
-		console.log("ddss");
 		if (this.wheelsUpdated == false) {
 			this.updateWheels();
 			this.wheelsUpdated = true;
@@ -108,6 +143,7 @@ class Chair extends THREE.Object3D {
 	renderMovement() {
 		this.translateX(this.speed * Math.sin(this.absRot));
 		this.translateZ(this.speed * Math.cos(this.absRot));
+		this.rotateWheels();
 	}
 
 
@@ -126,31 +162,32 @@ class Chair extends THREE.Object3D {
 	}
 
 	keyPressed(key) {
-		if (key == 37)
-			this.rotP = true;
-		else if (key == 39)
-			this.rotN = true;
-		else if (key == 40) {
-			this.accP = true;
-			this.startMoveTime = new Date();
+		if (key.repeat == false) {
+			if (key.keyCode == 37)
+				this.rotP = true;
+			else if (key.keyCode == 39)
+				this.rotN = true;
+			else if (key.keyCode == 40) {
+				this.accP = true;
+				this.startMoveTime = new Date();
+			}
+			else if (key.keyCode == 38) {
+				this.accN = true;
+				this.startMoveTime = new Date();
+			}
 		}
-		else if (key == 38) {
-			this.accN = true;
-			this.startMoveTime = new Date();
-		}
-
 	}
 
 	keyReleased(key) {
-		if (key == 37)
+		if (key.keyCode == 37)
 			this.rotP = false;
-		else if (key == 39)
+		else if (key.keyCode == 39)
 			this.rotN = false;
-		else if (key == 40) {
+		else if (key.keyCode == 40) {
 			this.accP = false;
 			this.startMoveTime = new Date();
 		}
-		else if (key == 38) {
+		else if (key.keyCode == 38) {
 			this.accN = false;
 			this.startMoveTime = new Date();
 		}
@@ -175,11 +212,7 @@ class Chair extends THREE.Object3D {
 
 		this.createWheelArm(x, y, z, 0);
 		this.createWheelArm(x, y, z, 55);
-		this.wheel1 = this.createWheel(x+4.25, y-1.5 ,z, 55);
-		this.wheel2 = this.createWheel(x-4.25, y-1.5 ,z, 55);
-		this.wheel3 = this.createWheel(x ,y-1.5 ,z+4.25, 55);
-		this.wheel4 = this.createWheel(x ,y-1.5 ,z-4.25, 55);
-		this.wheel5 = this.createWheel(x ,y-1.5 ,z-4.25, 55);
+		this.createWheels(x, y, z);
 		this.createStick(x, y+3.75, z);
 		this.createSeat(x, y+7.5, z);
 		this.createBack(x, y+12.75, z+5);

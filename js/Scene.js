@@ -57,12 +57,12 @@ class Scene extends THREE.Scene {
 
     onKeyUp(e) {
         'use strict';
-        this.chair.keyReleased(e.keyCode);
+        this.chair.keyReleased(e);
     }
     
     onKeyDown(e) {
         'use strict';
-        this.chair.keyPressed(e.keyCode);
+        this.chair.keyPressed(e);
         switch (e.keyCode) {
         case 49:
             this.activeCamera = 1;
