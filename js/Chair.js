@@ -10,7 +10,6 @@ class Chair extends THREE.Object3D {
         this.wheels[wheelNum].add(this.wheelChilds[wheelNum]);
         this.wheels[wheelNum].position.set(x, y, z);
         this.bottom.add(this.wheels[wheelNum]);
-        //return this.mesh;
 	}
 
 	createWheelArm(x, y, z, rot) {
@@ -49,7 +48,7 @@ class Chair extends THREE.Object3D {
 		this.createWheel(x ,y-1.5 ,z+4.25, 55, 2);
 		this.createWheel(x ,y-1.5 ,z-4.25, 55, 3);
 		this.createWheel(x ,y-1.5 ,z-4.25, 55, 4);
-
+	}
 
 	rotateP() {
 		this.top.rotateY(this.rotAngle);
