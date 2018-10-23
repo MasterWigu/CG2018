@@ -47,7 +47,7 @@ class Chair extends THREE.Object3D {
 		this.createWheel(x-4.25, y-1.5 ,z, 55, 1);
 		this.createWheel(x ,y-1.5 ,z+4.25, 55, 2);
 		this.createWheel(x ,y-1.5 ,z-4.25, 55, 3);
-		this.createWheel(x ,y-1.5 ,z-4.25, 55, 4);
+		//this.createWheel(x ,y-1.5 ,z-4.25, 55, 4);
 	}
 
 	rotateP() {
@@ -67,14 +67,14 @@ class Chair extends THREE.Object3D {
 		this.wheels[1].rotateY(-this.wheelRotTemp);
 		this.wheels[2].rotateY(-this.wheelRotTemp);
 		this.wheels[3].rotateY(-this.wheelRotTemp);
-		this.wheels[4].rotateY(-this.wheelRotTemp);
+		//this.wheels[4].rotateY(-this.wheelRotTemp);
 
 
 		this.wheels[0].rotateY(this.absRot);
 		this.wheels[1].rotateY(this.absRot);
 		this.wheels[2].rotateY(this.absRot);
 		this.wheels[3].rotateY(this.absRot);
-		this.wheels[4].rotateY(this.absRot);
+		//this.wheels[4].rotateY(this.absRot);
 
 		this.wheelRotTemp = this.absRot;
 	}
@@ -84,7 +84,7 @@ class Chair extends THREE.Object3D {
 		this.wheelChilds[1].rotateZ(-this.speed/1.25);
 		this.wheelChilds[2].rotateZ(-this.speed/1.25);
 		this.wheelChilds[3].rotateZ(-this.speed/1.25);
-		this.wheelChilds[4].rotateZ(-this.speed/1.25);
+		//this.wheelChilds[4].rotateZ(-this.speed/1.25);
 	}
 
 
@@ -94,7 +94,7 @@ class Chair extends THREE.Object3D {
 			this.wheelsUpdated = true;
 		}
 
-		this.speed = this.speed + dir * this.accel*(new Date() - this.startMoveTime);
+		this.speed = /*this.speed +*/ dir * this.accel*(new Date() - this.startMoveTime);
 		this.lastMove = dir;
 	}
 
@@ -103,12 +103,12 @@ class Chair extends THREE.Object3D {
 
 		if (this.speed != 0) {
 			if (this.lastMove == -1) {
-				this.speed = this.speed + this.brakeAccel*(new Date() - this.startMoveTime);
+				this.speed = /*this.speed +*/ this.brakeAccel*(new Date() - this.startMoveTime);
 				if (this.speed > 0)
 					this.speed = 0;
 			}
 			else {
-				this.speed = this.speed - this.brakeAccel*(new Date() - this.startMoveTime);
+				this.speed = /*this.speed*/ - this.brakeAccel*(new Date() - this.startMoveTime);
 				if (this.speed < 0)
 					this.speed = 0;
 			}
@@ -136,7 +136,7 @@ class Chair extends THREE.Object3D {
 		if (this.rotN == true)
 			this.rotateN();
 
-		if (this.accP == true) 
+		if (this.accP == true)
 			this.startMove(1);
 		if (this.accN == true)
 			this.startMove(-1);
@@ -182,7 +182,7 @@ class Chair extends THREE.Object3D {
 		this.position.z = 0;
 		this.translateZ(10);
 	}
-	
+
 	constructor(x, y, z) {
 		super();
 
@@ -202,7 +202,7 @@ class Chair extends THREE.Object3D {
 		this.createStick(x, y+3.75, z);
 		this.createSeat(x, y+7.5, z);
 		this.createBack(x, y+12.75, z+5);
-		this.createBack(x, y+12.75, z+5);
+		//this.createBack(x, y+12.75, z+5);
 
 		this.top.position.x = 0;
         this.top.position.y = 0;
@@ -211,7 +211,7 @@ class Chair extends THREE.Object3D {
         this.bottom.position.x = 0;
         this.bottom.position.y = 0;
         this.bottom.position.z = 0;
-        
+
 
         this.add(this.bottom);
         this.add(this.top);

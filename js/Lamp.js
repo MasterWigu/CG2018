@@ -43,7 +43,7 @@ class Lamp extends THREE.Object3D {
 		this.makeStick(x, y, z);
 		this.makeTop(x, y, z);
 		this.makeLamp(x, y, z);
-		this.makeLamp(x, y, z);
+		//this.makeLamp(x, y, z);
 
 		this.position.x = x;
         this.position.y = y;

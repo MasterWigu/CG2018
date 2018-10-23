@@ -5,11 +5,11 @@ class Scene extends THREE.Scene {
 
     createScene() {
         'use strict';
-    
+
         this.add(new THREE.AxisHelper(10));
-        
+
         this.mesa = new Table(0, 8, 0);
-        this.add(this.mesa); 
+        this.add(this.mesa);
 
         this.chair = new Chair(0, -6.25, 0);
         this.add(this.chair);
@@ -18,7 +18,7 @@ class Scene extends THREE.Scene {
         this.add(this.lamp);
 
     }
-    
+
     createCameras() {
         'use strict';
         this.activeCamera = 0;  //guarda qual a camara que estamos a usar (para o render)
@@ -38,17 +38,17 @@ class Scene extends THREE.Scene {
         this.camera0.lookAt(this.position);
 
     }
-    
+
     onResize() {
         'use strict';
-    
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        if (window.innerHeight > 0 && window.innerWidth > 0) {
-            this.camera0.aspect = window.innerWidth / window.innerHeight;
-            this.camera0.updateProjectionMatrix();
+
+        if(this.camera0 instanceof THREE.PerspectiveCamera) {
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          if (window.innerHeight > 0 && window.innerWidth > 0) {
+              this.camera0.aspect = window.innerWidth / window.innerHeight;
+              this.camera0.updateProjectionMatrix();
+          }
         }
-    
         this.camera1.update();
         this.camera2.update();
         this.camera3.update();
@@ -59,7 +59,7 @@ class Scene extends THREE.Scene {
         'use strict';
         this.chair.keyReleased(e);
     }
-    
+
     onKeyDown(e) {
         'use strict';
         this.chair.keyPressed(e);
@@ -80,11 +80,12 @@ class Scene extends THREE.Scene {
 
         case 65: //A
         case 97: //a
-            this.traverse(function (node) {
-                if (node instanceof THREE.Mesh) {
-                    node.material.wireframe = !node.material.wireframe;
-                }
-            });
+          	this.mesa.topMaterial.wireframe = !this.mesa.topMaterial.wireframe;
+            this.mesa.legMaterial.wireframe = !this.mesa.legMaterial.wireframe;
+            this.lamp.material.wireframe = !this.lamp.material.wireframe;
+            this.chair.wheelMaterial.wireframe = !this.chair.wheelMaterial.wireframe;
+            this.chair.ironMaterial.wireframe = !this.chair.ironMaterial.wireframe;
+            this.chair.blueMaterial.wireframe = !this.chair.blueMaterial.wireframe;
             break;
         case 83:  //S
         case 115: //s
@@ -100,7 +101,7 @@ class Scene extends THREE.Scene {
             break;
         }
     }
-    
+
     render() {
         'use strict';
         if (this.activeCamera == 0)
@@ -112,7 +113,7 @@ class Scene extends THREE.Scene {
         if (this.activeCamera == 3)
             this.renderer.render(this, this.camera3);
     }
-    
+
     constructor() {
         'use strict';
 
@@ -124,23 +125,23 @@ class Scene extends THREE.Scene {
         });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
-       
+
 
         this.createScene();
         this.createCameras();
-        
+
         this.controls = new THREE.TrackballControls(this.camera0); //para a camara movivel
-        
+
         this.render();
-        
+
         window.addEventListener("keydown", this.onKeyDown.bind(this)); //tem de se usar o bind() por ser uma classe ou wtv, apenas sei que funciona assim
         window.addEventListener("keyup", this.onKeyUp.bind(this));
         window.addEventListener("resize", this.onResize.bind(this));
     }
-    
+
     animate() {
         'use strict';
-        
+
         this.chair.move();
         this.chair.renderMovement();
         this.render();
